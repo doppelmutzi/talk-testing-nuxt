@@ -1,4 +1,4 @@
-## Overview of Testing APIs
+## How to Test
 
 - Use "plain" Vitest APIs for testing none-Vue code (e.g., Pinia actions)
 - Test Vue components with [@vue/test-utils](https://test-utils.vuejs.org/)
