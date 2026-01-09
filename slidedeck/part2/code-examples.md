@@ -17,22 +17,6 @@ it('matches snapshot with global stub (VTU)', () => {
 
 ---
 
-## VTU's stubbing project-wide
-
-```ts
-// vitest.setup.ts
-import { config } from '@vue/test-utils'
-
-config.global.stubs = {
-  MoleculesPollChoices: true,
-  AtomsSvgIcon: {
-    template: '<span data-testid="svg-icon"><slot/></span>',
-  },
-}
-```
-
----
-
 ## Test Vue component (NTU)
 
 ```ts
@@ -112,6 +96,22 @@ it('matches snapshot', async () => {
 
 ---
 
+## VTU's stubbing project-wide
+
+```ts
+// vitest.setup.ts
+import { config } from '@vue/test-utils'
+
+config.global.stubs = {
+  MoleculesPollChoices: true,
+  AtomsSvgIcon: {
+    template: '<span data-testid="svg-icon"><slot/></span>',
+  },
+}
+```
+
+---
+
 ## Mock auto-imports
 
 ```ts
@@ -141,6 +141,27 @@ it('should return runtimeConfig of nuxt config', () => {
   })
   expect(config).toMatchSnapshot()
 })
+```
+
+---
+
+## Regression testing external scripts
+
+```ts
+const mockUseHead = vi.hoisted(() =>
+  vi.fn().mockImplementation((arg) => {
+    expect({
+      script: arg.script.value,
+    }).toMatchSnapshot();
+  }),
+);
+mockNuxtImport('useHead', () => mockUseHead);
+
+it('sets Google Tag Manager', () => {
+    const cmsConfiguration = { gtm: true }
+    sut(cmsConfiguration)
+});
+
 ```
 
 ---
